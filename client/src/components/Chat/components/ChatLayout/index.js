@@ -12,122 +12,73 @@ import {
 } from "@material-ui/core";
 
 import styles from "./styles";
+import Message from "../../../../commonComponents/Message";
+import NavBarLayout from "../../../NavBar/components/NavBarLayout";
 
 const interlocutor = true;
 
-const ChatLayout = ({ classes }) => {
+const ChatLayout = ({
+  classes,
+  userName,
+  messageValue,
+  handleMessageChange,
+  messages,
+  sendMessage,
+  disabledSendMessageButton,
+}) => {
   return (
-    <Container className={classes.chatWrapper}>
-      <Grid container className={classes.chatBlockWrapper}>
-        <Grid
-          className={classes.chatBlock}
-          container
-          direction="column"
-          //justifyContent="flex-end"
-        >
+    <>
+      <NavBarLayout userName={userName} />
+      <Container className={classes.chatWrapper}>
+        <Grid container className={classes.chatBlockWrapper}>
           <Grid
+            className={classes.chatBlock}
             container
             direction="column"
-            className={`${classes.messageWrapper} ${
-              interlocutor && classes.interlocutor
-            }`}
+            //justifyContent="flex-end"
           >
-            <Grid container alignItems="center" className={classes.userInfo}>
-              <Avatar>A</Avatar>
-              <Typography className={classes.userName}>Name</Typography>
-            </Grid>
-            Hi Hi Hi Hi Hi Hi
+            {messages?.map((message) => {
+              console.log(message);
+              return message.event === "connection" ? (
+                <div key={message.id} className={classes.connectionMessage}>
+                  Пользовательн {message.userName} авторизован
+                </div>
+              ) : (
+                <Message
+                  key={message.id}
+                  userName={message.userName}
+                  messageContent={message.message}
+                />
+              );
+            })}
           </Grid>
-          <Grid container direction="column" className={classes.messageWrapper}>
+          <form onSubmit={sendMessage}>
             <Grid
               container
-              alignItems="center"
-              className={`${classes.userInfo}`}
+              className={classes.messageBlock}
+              direction="column"
+              alignItems="flex-end"
             >
-              <Avatar>A</Avatar>
-              <Typography className={classes.userName}>Name</Typography>
+              <TextField
+                fullWidth
+                rowsMax={2}
+                variant={"outlined"}
+                value={messageValue}
+                onChange={handleMessageChange}
+              />
+              <Button
+                type="submit"
+                variant="outlined"
+                color="primary"
+                disabled={disabledSendMessageButton}
+              >
+                Отправить
+              </Button>
             </Grid>
-            Hi Hi Hi Hi Hi Hi
-          </Grid>
-          <Grid container direction="column" className={classes.messageWrapper}>
-            <Grid
-              container
-              alignItems="center"
-              className={`${classes.userInfo}`}
-            >
-              <Avatar>A</Avatar>
-              <Typography className={classes.userName}>Name</Typography>
-            </Grid>
-            Hi Hi Hi Hi Hi Hi
-          </Grid>
-          <Grid container direction="column" className={classes.messageWrapper}>
-            <Grid
-              container
-              alignItems="center"
-              className={`${classes.userInfo}`}
-            >
-              <Avatar>A</Avatar>
-              <Typography className={classes.userName}>Name</Typography>
-            </Grid>
-            Hi Hi Hi Hi Hi Hi
-          </Grid>
-          <Grid container direction="column" className={classes.messageWrapper}>
-            <Grid
-              container
-              alignItems="center"
-              className={`${classes.userInfo}`}
-            >
-              <Avatar>A</Avatar>
-              <Typography className={classes.userName}>Name</Typography>
-            </Grid>
-            Hi Hi Hi Hi Hi Hi
-          </Grid>
-          <Grid container direction="column" className={classes.messageWrapper}>
-            <Grid
-              container
-              alignItems="center"
-              className={`${classes.userInfo}`}
-            >
-              <Avatar>A</Avatar>
-              <Typography className={classes.userName}>Name</Typography>
-            </Grid>
-            Hi Hi Hi Hi Hi Hi
-          </Grid>
-          <Grid container direction="column" className={classes.messageWrapper}>
-            <Grid
-              container
-              alignItems="center"
-              className={`${classes.userInfo}`}
-            >
-              <Avatar>A</Avatar>
-              <Typography className={classes.userName}>Name</Typography>
-            </Grid>
-            Hi Hi Hi Hi Hi Hi
-          </Grid>
+          </form>
         </Grid>
-        <Grid
-          container
-          className={classes.messageBlock}
-          direction="column"
-          alignItems="flex-end"
-          //style={{width: '80%'}}
-        >
-          <TextField
-            fullWidth
-            rowsMax={2}
-            variant={"outlined"}
-            //value={value}
-            //onChange={e => setValue(e.target.value)}
-          />
-          <Button
-            //onClick={sendMessage}
-            variant={"outlined"}
-          >
-            Отправить
-          </Button>
-        </Grid>
-      </Grid>
-    </Container>
+      </Container>
+    </>
   );
 };
 
