@@ -4,18 +4,44 @@ import { Avatar, Grid, Typography, withStyles } from "@material-ui/core";
 
 import styles from "./styles";
 
-const Message = ({ classes, userName, messageContent }) => {
+const Message = ({
+  classes,
+  messageUserName,
+  userName,
+  messageContent,
+  createdAt,
+}) => {
   return (
-    <Grid container direction="column" className={classes.messageWrapper}>
-      <Grid container alignItems="center" className={`${classes.userInfo}`}>
-        <Avatar>A</Avatar>
-        <Typography className={classes.userName}>{userName}</Typography>
+    <Grid
+      container
+      className={`${classes.messageBlock} ${
+        userName !== messageUserName && classes.interlocutor
+      }`}
+    >
+      <Typography className={classes.createdAt}>{createdAt}</Typography>
+      <Grid
+        container
+        direction="column"
+        className={`${classes.messageWrapper} ${
+          userName !== messageUserName && classes.grayBackground
+        }`}
+      >
+        <Grid container alignItems="center" className={classes.userInfo}>
+          <Avatar>A</Avatar>
+          <Typography className={classes.userName}>
+            {messageUserName}
+          </Typography>
+        </Grid>
+        {messageContent}
       </Grid>
-      {messageContent}
     </Grid>
   );
 };
 
-Message.propTypes = {};
+Message.propTypes = {
+  userName: PropTypes.string.isRequired,
+  messageContent: PropTypes.string.isRequired,
+  createdAt: PropTypes.string.isRequired,
+};
 
 export default React.memo(withStyles(styles)(Message));

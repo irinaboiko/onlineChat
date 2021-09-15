@@ -40,6 +40,11 @@ const LogInLayout = ({
   );
 };
 
-LogInLayout.propTypes = {};
+LogInLayout.propTypes = {
+  userName: PropTypes.string.isRequired,
+  handleUserNameChange: PropTypes.func.isRequired,
+  connect: PropTypes.func.isRequired,
+  disabledLogInButton: PropTypes.bool.isRequired,
+};
 
 export default React.memo(withStyles(styles)(LogInLayout));

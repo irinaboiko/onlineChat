@@ -1,21 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {
-  Avatar,
-  Box,
   Button,
   Container,
   Grid,
   TextField,
-  Typography,
   withStyles,
 } from "@material-ui/core";
 
 import styles from "./styles";
 import Message from "../../../../commonComponents/Message";
 import NavBarLayout from "../../../NavBar/components/NavBarLayout";
-
-const interlocutor = true;
 
 const ChatLayout = ({
   classes,
@@ -31,23 +26,15 @@ const ChatLayout = ({
       <NavBarLayout userName={userName} />
       <Container className={classes.chatWrapper}>
         <Grid container className={classes.chatBlockWrapper}>
-          <Grid
-            className={classes.chatBlock}
-            container
-            direction="column"
-            //justifyContent="flex-end"
-          >
-            {messages?.map((message) => {
-              console.log(message);
-              return message.event === "connection" ? (
-                <div key={message.id} className={classes.connectionMessage}>
-                  Пользовательн {message.userName} авторизован
-                </div>
-              ) : (
+          <Grid className={classes.chatBlock} container direction="column">
+            {messages.map((message) => {
+              return (
                 <Message
                   key={message.id}
-                  userName={message.userName}
+                  messageUserName={message.userName}
+                  userName={userName}
                   messageContent={message.message}
+                  createdAt={message.createdAt}
                 />
               );
             })}
@@ -82,6 +69,13 @@ const ChatLayout = ({
   );
 };
 
-ChatLayout.propTypes = {};
+ChatLayout.propTypes = {
+  userName: PropTypes.string.isRequired,
+  messageValue: PropTypes.string.isRequired,
+  handleMessageChange: PropTypes.func.isRequired,
+  messages: PropTypes.array,
+  sendMessage: PropTypes.func.isRequired,
+  disabledSendMessageButton: PropTypes.bool.isRequired,
+};
 
 export default React.memo(withStyles(styles)(ChatLayout));

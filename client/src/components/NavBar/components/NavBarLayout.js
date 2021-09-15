@@ -1,8 +1,8 @@
 import React from "react";
+import PropTypes from "prop-types";
 import {
   AppBar,
   Avatar,
-  Button,
   Grid,
   Toolbar,
   Typography,
@@ -22,6 +22,10 @@ const NavBarLayout = ({ classes, userName }) => {
       </Toolbar>
     </AppBar>
   );
+};
+
+NavBarLayout.propTypes = {
+  userName: PropTypes.string.isRequired,
 };
 
 export default React.memo(withStyles(styles)(NavBarLayout));

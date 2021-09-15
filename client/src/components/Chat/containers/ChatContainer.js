@@ -1,4 +1,6 @@
 import React, { useCallback, useMemo, useRef, useState } from "react";
+import _ from "lodash";
+import { v4 as uuid } from "uuid";
 
 import ChatLayout from "../components/ChatLayout";
 import LogInLayout from "../../LogIn/components/LogInLayout";
@@ -31,12 +33,6 @@ const ChatContainer = () => {
 
     socket.current.onopen = () => {
       setConnected(true);
-      const message = {
-        event: "connection",
-        userName,
-        id: Date.now(),
-      };
-      socket.current.send(JSON.stringify(message));
     };
 
     socket.current.onmessage = (event) => {
@@ -46,6 +42,7 @@ const ChatContainer = () => {
 
     socket.current.onclose = () => {
       console.log("Socket closed");
+      setConnected(false);
     };
 
     socket.current.onerror = () => {
@@ -55,11 +52,15 @@ const ChatContainer = () => {
 
   const sendMessage = async (event) => {
     event.preventDefault();
+
+    const currentDate = Date.now();
+
     const message = {
       userName,
       message: messageValue,
-      id: Date.now(),
-      event: "message",
+      id: uuid(),
+      createdAtForSort: currentDate,
+      createdAt: new Date(currentDate).toLocaleString(),
     };
     socket.current.send(JSON.stringify(message));
     setMessageValue("");
@@ -71,6 +72,8 @@ const ChatContainer = () => {
   );
 
   const disabledLogInButton = useMemo(() => !userName.trim(), [userName]);
+
+  messages.sort((a, b) => a.createdAtForSort - b.createdAtForSort);
 
   return connected ? (
     <ChatLayout
@@ -93,7 +96,4 @@ const ChatContainer = () => {
 
 export default ChatContainer;
 
-//TODO: add time to messages
-//TODO: filter messages
 //TODO: add google authorization
-//TODO: replace messages ids with uuid

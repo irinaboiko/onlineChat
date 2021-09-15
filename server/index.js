@@ -10,19 +10,9 @@ const wss = new ws.Server(
 wss.on("connection", function connection(ws) {
   ws.on("message", function (message) {
     message = JSON.parse(message);
-    switch (message.event) {
-      case "message":
-        broadcastMessage(message);
-        break;
-      case "connection":
-        broadcastMessage(message);
-        break;
-    }
+
+    wss.clients.forEach((client) => {
+      client.send(JSON.stringify(message));
+    });
   });
 });
-
-function broadcastMessage(message) {
-  wss.clients.forEach((client) => {
-    client.send(JSON.stringify(message));
-  });
-}
