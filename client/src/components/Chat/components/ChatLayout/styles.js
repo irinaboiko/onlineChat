@@ -5,16 +5,13 @@ const styles = () => ({
   },
   chatBlockWrapper: {
     height: "100%",
-    flexDirection: "column",
-    flexWrap: "nowrap",
   },
   chatBlock: {
     backgroundColor: "#e0e0e0",
-    //flex: "1 0 auto",
     height: "calc(100vh - 176px)",
-    flexWrap: "nowrap",
     overflow: "hidden",
     overflowY: "auto",
+    padding: "10px 20px",
   },
   connectionMessage: {
     textAlign: "center",

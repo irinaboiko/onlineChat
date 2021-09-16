@@ -1,25 +1,26 @@
 const styles = () => ({
   messageBlock: {
-    width: "auto",
-    alignSelf: "flex-end",
-    margin: 10,
+    width: "fit-content",
+    margin: "10px 0 10px auto",
   },
   messageWrapper: {
     fontSize: 14,
     backgroundColor: " #83a3d4",
     borderRadius: 5,
     width: "fit-content",
-    maxWidth: "40%",
+    maxWidth: "800px",
     padding: 10,
   },
   interlocutor: {
     flexDirection: "row-reverse",
-    alignSelf: "flex-start",
+    margin: "10px auto 10px 0",
   },
   grayBackground: {
     backgroundColor: "#a9a9a9",
   },
   createdAt: {
+    fontFamily: "'Comfortaa', cursive, sans-serif",
+    fontSize: 12,
     color: "#6f6f6f",
     margin: "0 5px",
   },
@@ -30,6 +31,9 @@ const styles = () => ({
     fontFamily: "'Comfortaa', cursive, sans-serif",
     fontSize: 12,
     marginLeft: 5,
+  },
+  messageContent: {
+    fontFamily: "'Comfortaa', cursive, sans-serif",
   },
 });
 

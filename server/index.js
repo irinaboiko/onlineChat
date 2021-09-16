@@ -1,17 +1,19 @@
-const ws = require("ws");
+const webSocket = require("ws");
 
-const wss = new ws.Server(
+const PORT = 5000;
+
+const webSocketServer = new webSocket.Server(
   {
-    port: 5000,
+    port: PORT,
   },
-  () => console.log(`Server started on 5000`)
+  () => console.log(`Server started on port ${PORT}`)
 );
 
-wss.on("connection", function connection(ws) {
-  ws.on("message", function (message) {
+webSocketServer.on("connection", function connection(socket) {
+  socket.on("message", function (message) {
     message = JSON.parse(message);
 
-    wss.clients.forEach((client) => {
+    webSocketServer.clients.forEach((client) => {
       client.send(JSON.stringify(message));
     });
   });

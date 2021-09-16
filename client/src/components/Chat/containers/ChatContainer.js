@@ -1,5 +1,4 @@
 import React, { useCallback, useMemo, useRef, useState } from "react";
-import _ from "lodash";
 import { v4 as uuid } from "uuid";
 
 import ChatLayout from "../components/ChatLayout";

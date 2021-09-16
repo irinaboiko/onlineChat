@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Avatar, Grid, Typography, withStyles } from "@material-ui/core";
+import { Avatar, Box, Grid, Typography, withStyles } from "@material-ui/core";
 
 import styles from "./styles";
 
@@ -19,9 +19,7 @@ const Message = ({
       }`}
     >
       <Typography className={classes.createdAt}>{createdAt}</Typography>
-      <Grid
-        container
-        direction="column"
+      <Box
         className={`${classes.messageWrapper} ${
           userName !== messageUserName && classes.grayBackground
         }`}
@@ -33,7 +31,7 @@ const Message = ({
           </Typography>
         </Grid>
         {messageContent}
-      </Grid>
+      </Box>
     </Grid>
   );
 };

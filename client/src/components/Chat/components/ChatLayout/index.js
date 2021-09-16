@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {
+  Box,
   Button,
   Container,
   Grid,
@@ -11,6 +12,7 @@ import {
 import styles from "./styles";
 import Message from "../../../../commonComponents/Message";
 import NavBarLayout from "../../../NavBar/components/NavBarLayout";
+import ScrollToBottom from "../../../../commonComponents/ScrollToBottom/ScrollToBottom";
 
 const ChatLayout = ({
   classes,
@@ -20,13 +22,15 @@ const ChatLayout = ({
   messages,
   sendMessage,
   disabledSendMessageButton,
+  messagesBottom,
+  chatBlock,
 }) => {
   return (
     <>
       <NavBarLayout userName={userName} />
       <Container className={classes.chatWrapper}>
-        <Grid container className={classes.chatBlockWrapper}>
-          <Grid className={classes.chatBlock} container direction="column">
+        <Box className={classes.chatBlockWrapper}>
+          <Box className={classes.chatBlock} ref={chatBlock}>
             {messages.map((message) => {
               return (
                 <Message
@@ -38,7 +42,9 @@ const ChatLayout = ({
                 />
               );
             })}
-          </Grid>
+
+            <ScrollToBottom />
+          </Box>
           <form onSubmit={sendMessage}>
             <Grid
               container
@@ -63,7 +69,7 @@ const ChatLayout = ({
               </Button>
             </Grid>
           </form>
-        </Grid>
+        </Box>
       </Container>
     </>
   );
