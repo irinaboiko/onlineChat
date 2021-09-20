@@ -8,3 +8,5 @@
 
 # production
 /client/build
+
+/client/.env

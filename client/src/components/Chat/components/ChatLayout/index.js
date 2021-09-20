@@ -9,43 +9,46 @@ import {
   withStyles,
 } from "@material-ui/core";
 
-import styles from "./styles";
 import Message from "../../../../commonComponents/Message";
 import NavBarLayout from "../../../NavBar/components/NavBarLayout";
 import ScrollToBottom from "../../../../commonComponents/ScrollToBottom/ScrollToBottom";
 
+import styles from "./styles";
+
 const ChatLayout = ({
   classes,
   userName,
+  userId,
+  userImage,
   messageValue,
   handleMessageChange,
   messages,
-  sendMessage,
-  disabledSendMessageButton,
-  messagesBottom,
-  chatBlock,
+  handleSendMessage,
+  isSendMessageButtonDisabled,
 }) => {
   return (
     <>
-      <NavBarLayout userName={userName} />
+      <NavBarLayout userName={userName} userImage={userImage} />
       <Container className={classes.chatWrapper}>
         <Box className={classes.chatBlockWrapper}>
-          <Box className={classes.chatBlock} ref={chatBlock}>
+          <Box className={classes.chatBlock}>
             {messages.map((message) => {
               return (
                 <Message
                   key={message.id}
+                  userId={userId}
+                  messageUserImage={message.userImage}
+                  messageUserId={message.userId}
                   messageUserName={message.userName}
-                  userName={userName}
                   messageContent={message.message}
                   createdAt={message.createdAt}
                 />
               );
             })}
-
             <ScrollToBottom />
           </Box>
-          <form onSubmit={sendMessage}>
+
+          <form onSubmit={handleSendMessage}>
             <Grid
               container
               className={classes.messageBlock}
@@ -63,7 +66,7 @@ const ChatLayout = ({
                 type="submit"
                 variant="outlined"
                 color="primary"
-                disabled={disabledSendMessageButton}
+                disabled={isSendMessageButtonDisabled}
               >
                 Отправить
               </Button>
@@ -77,11 +80,13 @@ const ChatLayout = ({
 
 ChatLayout.propTypes = {
   userName: PropTypes.string.isRequired,
+  userId: PropTypes.string.isRequired,
+  userImage: PropTypes.string.isRequired,
   messageValue: PropTypes.string.isRequired,
   handleMessageChange: PropTypes.func.isRequired,
   messages: PropTypes.array,
-  sendMessage: PropTypes.func.isRequired,
-  disabledSendMessageButton: PropTypes.bool.isRequired,
+  handleSendMessage: PropTypes.func.isRequired,
+  isSendMessageButtonDisabled: PropTypes.bool.isRequired,
 };
 
 export default React.memo(withStyles(styles)(ChatLayout));

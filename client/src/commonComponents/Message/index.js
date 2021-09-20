@@ -6,8 +6,10 @@ import styles from "./styles";
 
 const Message = ({
   classes,
+  userId,
+  messageUserId,
+  messageUserImage,
   messageUserName,
-  userName,
   messageContent,
   createdAt,
 }) => {
@@ -15,17 +17,17 @@ const Message = ({
     <Grid
       container
       className={`${classes.messageBlock} ${
-        userName !== messageUserName && classes.interlocutor
+        userId !== messageUserId && classes.interlocutor
       }`}
     >
       <Typography className={classes.createdAt}>{createdAt}</Typography>
       <Box
         className={`${classes.messageWrapper} ${
-          userName !== messageUserName && classes.grayBackground
+          userId !== messageUserId && classes.grayBackground
         }`}
       >
         <Grid container alignItems="center" className={classes.userInfo}>
-          <Avatar>A</Avatar>
+          <Avatar src={messageUserImage} />
           <Typography className={classes.userName}>
             {messageUserName}
           </Typography>
@@ -37,7 +39,10 @@ const Message = ({
 };
 
 Message.propTypes = {
-  userName: PropTypes.string.isRequired,
+  userId: PropTypes.string.isRequired,
+  messageUserId: PropTypes.string.isRequired,
+  messageUserImage: PropTypes.string.isRequired,
+  messageUserName: PropTypes.string.isRequired,
   messageContent: PropTypes.string.isRequired,
   createdAt: PropTypes.string.isRequired,
 };

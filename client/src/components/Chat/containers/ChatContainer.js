@@ -1,15 +1,24 @@
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { v4 as uuid } from "uuid";
 
 import ChatLayout from "../components/ChatLayout";
-import LogInLayout from "../../LogIn/components/LogInLayout";
+import LoginGoogle from "../../LoginGoogle/LoginGoogle";
+import { isAuthContext, userDetailsContext } from "../../../App";
 
 const ChatContainer = () => {
   const [messages, setMessages] = useState([]);
   const [messageValue, setMessageValue] = useState("");
-  const [userName, setUserName] = useState("");
-  const [connected, setConnected] = useState(false);
   const socket = useRef();
+
+  const [userDetails, setUserDetails] = useContext(userDetailsContext);
+  const [isAuth, setIsAuth] = useContext(isAuthContext);
 
   const handleMessageChange = useCallback(
     (event) => {
@@ -18,20 +27,11 @@ const ChatContainer = () => {
     [messageValue]
   );
 
-  const handleUserNameChange = useCallback(
-    (event) => {
-      setUserName(event.target.value);
-    },
-    [userName]
-  );
-
-  function connect(event) {
-    event.preventDefault();
-
+  useEffect(() => {
     socket.current = new WebSocket("ws://localhost:5000");
 
     socket.current.onopen = () => {
-      setConnected(true);
+      console.log("Socket started");
     };
 
     socket.current.onmessage = (event) => {
@@ -41,21 +41,22 @@ const ChatContainer = () => {
 
     socket.current.onclose = () => {
       console.log("Socket closed");
-      setConnected(false);
     };
 
     socket.current.onerror = () => {
       console.log("Socket was an error");
     };
-  }
+  }, []);
 
-  const sendMessage = async (event) => {
+  const handleSendMessage = async (event) => {
     event.preventDefault();
 
     const currentDate = Date.now();
 
     const message = {
-      userName,
+      userName: userDetails.name,
+      userId: userDetails.googleId,
+      userImage: userDetails.imageUrl,
       message: messageValue,
       id: uuid(),
       createdAtForSort: currentDate,
@@ -65,34 +66,27 @@ const ChatContainer = () => {
     setMessageValue("");
   };
 
-  const disabledSendMessageButton = useMemo(
+  const isSendMessageButtonDisabled = useMemo(
     () => !messageValue.trim(),
     [messageValue]
   );
 
-  const disabledLogInButton = useMemo(() => !userName.trim(), [userName]);
-
   messages.sort((a, b) => a.createdAtForSort - b.createdAtForSort);
 
-  return connected ? (
+  return isAuth ? (
     <ChatLayout
-      userName={userName}
+      userName={userDetails.name}
+      userId={userDetails.googleId}
+      userImage={userDetails.imageUrl}
       messageValue={messageValue}
-      handleMessageChange={handleMessageChange}
       messages={messages}
-      sendMessage={sendMessage}
-      disabledSendMessageButton={disabledSendMessageButton}
+      handleSendMessage={handleSendMessage}
+      handleMessageChange={handleMessageChange}
+      isSendMessageButtonDisabled={isSendMessageButtonDisabled}
     />
   ) : (
-    <LogInLayout
-      userName={userName}
-      handleUserNameChange={handleUserNameChange}
-      connect={connect}
-      disabledLogInButton={disabledLogInButton}
-    />
+    <LoginGoogle />
   );
 };
 
 export default ChatContainer;
-
-//TODO: add google authorization
