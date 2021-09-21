@@ -29,10 +29,10 @@ const LoginGoogle = ({ classes }) => {
 
   return (
     <div className={classes.loginWrapper}>
-      <Typography variant="h3" className={classes.capture}>
+      <Typography variant="h4" className={classes.title}>
         Добро пожаловать!
       </Typography>
-      <Typography variant="h5" className={classes.capture}>
+      <Typography variant="h6" className={classes.subtitle}>
         Для продолжения, пожалуйста, авторизируйтесь
       </Typography>
       <GoogleLogin
