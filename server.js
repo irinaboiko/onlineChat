@@ -1,15 +1,23 @@
-const webSocket = require("ws");
-
+const { Server } = require("ws");
 const PORT = process.env.PORT || 5000;
+const http = require("http");
+//const INDEX = "/client/src/components/Chat/containers/ChatContainer";
 
-const webSocketServer = new webSocket.Server(
+/*const server = express()
+  //.use((req, res) => res.sendFile(INDEX, { root: __dirname }))
+  .listen(PORT, () => console.log(`Listening on ${PORT}`));*/
+
+const server = http.createServer();
+server.listen(PORT, () => console.log(`Listening on ${PORT}`));
+
+const webSocketServer = new Server(
   {
-    port: PORT,
+    server,
   },
-  () => console.log(`Server started on port ${PORT}`)
+  () => console.log(`Websocket started on port ${PORT}`)
 );
 
-webSocketServer.on("connection", function connection(socket) {
+webSocketServer.on("connection", (socket) => {
   socket.on("message", function (message) {
     message = JSON.parse(message);
 
