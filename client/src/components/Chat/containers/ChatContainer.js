@@ -29,7 +29,10 @@ const ChatContainer = () => {
 
   useEffect(() => {
     const HOSTNAME = window.location.hostname;
-    socket.current = new WebSocket(`ws://${HOSTNAME}:5000`);
+    socket.current = new WebSocket(`ws://${HOSTNAME}:5000`, {
+      Connection: "Upgrade",
+      Upgrade: "websocket",
+    });
 
     socket.current.onopen = () => {
       console.log("Socket started");
