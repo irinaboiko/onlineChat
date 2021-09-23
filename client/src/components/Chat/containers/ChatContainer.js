@@ -29,7 +29,11 @@ const ChatContainer = () => {
 
   useEffect(() => {
     const HOSTNAME = window.location.hostname;
-    socket.current = new WebSocket(`ws://${HOSTNAME}:5000`);
+    const HREF = window.location.href;
+    socket.current = new WebSocket(`ws://${HOSTNAME}:5000`, {
+      origin: HREF,
+      headers: { Authorization: "base64 auth" },
+    });
 
     //const HOST = window.location.origin.replace(/^http/, "ws");
     //socket.current = new WebSocket(HOST);
