@@ -28,9 +28,8 @@ const ChatContainer = () => {
   );
 
   useEffect(() => {
-    const HOST = window.location.origin.replace(/^http/, "ws");
-    console.log(HOST);
-    socket.current = new WebSocket(`${HOST}/echo`);
+    const HOSTNAME = window.location.hostname;
+    socket.current = new WebSocket(`ws://${HOSTNAME}:5000`);
 
     socket.current.onopen = () => {
       console.log("Socket started");
